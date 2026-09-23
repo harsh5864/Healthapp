@@ -1,0 +1,6 @@
+package com.healthcompanion.controller;
+import com.healthcompanion.dto.AuthDtos.*; import com.healthcompanion.security.JwtService; import com.healthcompanion.service.UserService; import jakarta.validation.Valid; import org.springframework.http.*; import org.springframework.web.bind.annotation.*;
+@RestController @RequestMapping("/api/auth") public class AuthController { private final UserService service; private final JwtService jwt; public AuthController(UserService s,JwtService j){service=s;jwt=j;} private UserResponse profile(com.healthcompanion.entity.User u){return new UserResponse(u.getId(),u.getName(),u.getEmail());}
+ @PostMapping("/register") public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest req){var u=service.register(req);return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(jwt.generate(u.getId(),u.getEmail()),profile(u)));}
+ @PostMapping("/login") public AuthResponse login(@Valid @RequestBody LoginRequest req){var u=service.current(req.email());if(!service.matches(u,req.password())) throw new com.healthcompanion.exception.ApiException(HttpStatus.UNAUTHORIZED,"INVALID_CREDENTIALS","Email or password is incorrect.");return new AuthResponse(jwt.generate(u.getId(),u.getEmail()),profile(u));}
+}

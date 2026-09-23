@@ -1,0 +1,58 @@
+# Render Blueprint Specification for AI Health Companion
+services:
+  # 1. MySQL Database
+  - type: mysql
+    name: ai-health-db
+    databaseName: ai_health_companion
+    user: healthapp
+    plan: free
+
+  # 2. Python AI Service (FastAPI)
+  - type: web
+    name: ai-health-companion-ai
+    env: python
+    rootDir: ai-service
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: AI_MODE
+        value: production
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: OPENROUTER_MODEL
+        value: google/gemini-2.5-flash
+
+  # 3. Java Spring Boot Backend
+  - type: web
+    name: ai-health-companion-backend
+    env: docker
+    dockerfilePath: backend/Dockerfile
+    envVars:
+      - key: AI_MODE
+        value: production
+      - key: DB_URL
+        fromDatabase:
+          name: ai-health-db
+          property: connectionString
+      - key: AI_PROVIDER_BASE_URL
+        fromService:
+          type: web
+          name: ai-health-companion-ai
+          property: host
+
+  # 4. Frontend (Static Site / Vite React)
+  - type: static
+    name: ai-health-companion-frontend
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          type: web
+          name: ai-health-companion-backend
+          property: host

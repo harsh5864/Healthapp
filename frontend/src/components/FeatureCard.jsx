@@ -1,0 +1,1 @@
+export default function FeatureCard({ icon, title, body, to, action }) { return <article className="dashboard-feature"><span className="feature-card__icon">{icon}</span><h3>{title}</h3><p>{body}</p><a href={to}>{action || 'Open feature'} <span>→</span></a></article>; }

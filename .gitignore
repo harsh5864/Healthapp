@@ -1,0 +1,27 @@
+# Java / Spring Boot
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# Node / Vite
+frontend/node_modules/
+frontend/dist/
+
+# Python
+ai-service/.venv/
+ai-service/__pycache__/
+ai-service/**/*.py[cod]
+
+# Local configuration and generated data
+.env
+.env.*
+!.env.example
+uploads/
+mysql-data/
+.tools/
+
+# IDE and operating system files
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
