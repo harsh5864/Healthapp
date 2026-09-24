@@ -4,9 +4,14 @@ import axios from 'axios';
  * Single HTTP boundary for the React application. Future auth interceptors and
  * feature services attach here instead of scattering API URLs through pages.
  */
+const rawBaseUrl = import.meta.env.VITE_API_BASE_URL;
+const normalizedBaseUrl = rawBaseUrl
+  ? (rawBaseUrl.replace(/\/+$/, '').endsWith('/api') ? rawBaseUrl.replace(/\/+$/, '') : `${rawBaseUrl.replace(/\/+$/, '')}/api`)
+  : '/api';
+
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
-  timeout: 10_000,
+  baseURL: normalizedBaseUrl,
+  timeout: 15_000,
   headers: { Accept: 'application/json' },
 });
 
