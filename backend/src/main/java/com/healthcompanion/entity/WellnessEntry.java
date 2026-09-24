@@ -11,6 +11,7 @@ public class WellnessEntry {
     @Column(nullable = false) private Integer stress;
     @Column(nullable = false) private Integer energy;
     @Column(nullable = false) private Double sleepHours;
+    @Column(nullable = false) private Integer activity = 5;
     @Column(columnDefinition = "TEXT") private String journalText;
     @Column(nullable = false, updatable = false) private Instant createdAt;
     @PrePersist void onCreate() { createdAt = Instant.now(); }
@@ -19,6 +20,7 @@ public class WellnessEntry {
     public Integer getStress() { return stress; } public void setStress(Integer v) { stress = v; }
     public Integer getEnergy() { return energy; } public void setEnergy(Integer v) { energy = v; }
     public Double getSleepHours() { return sleepHours; } public void setSleepHours(Double v) { sleepHours = v; }
+    public Integer getActivity() { return activity != null ? activity : 5; } public void setActivity(Integer v) { activity = v != null ? v : 5; }
     public String getJournalText() { return journalText; } public void setJournalText(String v) { journalText = v; }
     public Instant getCreatedAt() { return createdAt; }
 }

@@ -13,7 +13,7 @@ public class MockHealthChatService implements HealthChatService {
     private static final String EMERGENCY_NOTICE =
             "**[IMMEDIATE EMERGENCY ATTENTION RECOMMENDED]**\n\n" +
             "Your message mentions symptoms that may indicate a potentially life-threatening medical emergency. " +
-            "Please call your local emergency service (e.g., 911/112/999) or proceed immediately to the nearest emergency department. " +
+            "Please seek emergency medical care immediately and call your local emergency service (e.g., 911/112/999) or proceed to the nearest emergency department. " +
             "Do not wait or drive yourself if you are feeling unwell." +
             DISCLAIMER;
 
@@ -53,7 +53,7 @@ public class MockHealthChatService implements HealthChatService {
                    "**3. General supportive measures:**\n" +
                    "Resting in a quiet, dark room, staying hydrated, and avoiding prolonged screen time may help.\n\n" +
                    "**4. When to seek medical evaluation:**\n" +
-                   "Seek prompt medical attention if the headache is sudden and unusually severe, or accompanied by stiff neck, fever, or confusion." +
+                   "Seek professional care if the headache is sudden and unusually severe, or accompanied by stiff neck, fever, or confusion." +
                    DISCLAIMER;
         }
 
@@ -94,7 +94,7 @@ public class MockHealthChatService implements HealthChatService {
                "- When did you first notice these symptoms?\n" +
                "- What activities or factors make them feel better or worse?\n\n" +
                "**Recommended Next Steps:**\n" +
-               "Keep track of when your symptoms happen and discuss any persistent or concerning symptoms with your doctor or healthcare clinic." +
+               "Keep track of when your symptoms happen and discuss any persistent or concerning symptoms with a doctor or healthcare professional." +
                DISCLAIMER;
     }
 }

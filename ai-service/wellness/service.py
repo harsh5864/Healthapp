@@ -1,6 +1,6 @@
-"""Wellness trend and journal analysis service powered by OpenRouter LLM.
+"""Wellness trend and multi-model analysis service powered by SleepLM, Menta, and OpenRouter LLM.
 
-Provides empathetic, pattern-based observations for mood, stress, energy and sleep,
+Provides empathetic, pattern-based observations for mood, stress, energy, activity and sleep,
 integrating journal entries with strict non-diagnostic clinical boundaries.
 """
 
@@ -11,6 +11,8 @@ from typing import Any
 
 from services.openrouter_client import openrouter_client
 from services.settings import settings
+from wellness.menta import analyze_menta
+from wellness.sleeplm import analyze_sleeplm
 
 logger = logging.getLogger(__name__)
 
@@ -27,26 +29,33 @@ def analyze_wellness(
     avg_stress: float,
     avg_energy: float,
     avg_sleep: float,
+    avg_activity: float = 5.0,
 ) -> dict[str, Any]:
-    """Generate empathetic trend insights and journal reflections via OpenRouter."""
+    """Generate empathetic trend insights, SleepLM sleep architecture, and Menta mind-body synthesis."""
+    # Run specialized SleepLM and Menta analyses
+    sleeplm_result = analyze_sleeplm(entries, avg_sleep)
+    menta_result = analyze_menta(entries, avg_mood, avg_stress, avg_energy, avg_activity)
+
     # 1. Fallback / mock mode
     if settings.ai_mode.lower() == "mock" or not openrouter_client.is_available:
         mood_str = "Stable / positive" if avg_mood >= 6.0 else "Lower recently"
         stress_str = "Lower recently" if avg_stress <= 4.0 else "Higher recently"
         sleep_str = "Steady" if avg_sleep >= 7.0 else "Slightly reduced"
         rule_analysis = (
-            f"Your recent self-reported entries show mood at {avg_mood:.1f}/10, stress at {avg_stress:.1f}/10 "
-            f"and average sleep of {avg_sleep:.1f} hours. {WELLNESS_DISCLAIMER}"
+            f"Your recent self-reported entries show mood at {avg_mood:.1f}/10, stress at {avg_stress:.1f}/10, "
+            f"activity at {avg_activity:.1f}/10 and average sleep of {avg_sleep:.1f} hours. {WELLNESS_DISCLAIMER}"
         )
         return {
             "moodTrend": mood_str,
             "stressTrend": stress_str,
             "sleepTrend": sleep_str,
             "analysis": rule_analysis,
+            "sleepLm": sleeplm_result,
+            "menta": menta_result,
             "provider": "wellness-rule-engine",
         }
 
-    # 2. OpenRouter LLM Analysis
+    # 2. OpenRouter General Trend Synthesis
     try:
         journal_snippets = []
         for e in entries[:5]:
@@ -63,6 +72,7 @@ def analyze_wellness(
             f"- Average Mood: {avg_mood:.1f}/10\n"
             f"- Average Stress: {avg_stress:.1f}/10\n"
             f"- Average Energy: {avg_energy:.1f}/10\n"
+            f"- Average Activity: {avg_activity:.1f}/10\n"
             f"- Average Sleep: {avg_sleep:.1f} hours/night\n"
             f"- Recent Journal Reflections:\n{journal_context}\n\n"
             "Analyze these patterns thoughtfully and return ONLY a valid JSON object matching:\n"
@@ -70,7 +80,7 @@ def analyze_wellness(
             '  "moodTrend": "concise trend label (e.g. Positive & Stable, Rebounding, Variable) under 35 chars",\n'
             '  "stressTrend": "concise trend label (e.g. Low & Manageable, Mildly Elevated) under 35 chars",\n'
             '  "sleepTrend": "concise trend label (e.g. Restful & Consistent, Mild Sleep Deficit) under 35 chars",\n'
-            '  "analysis": "2 concise paragraphs of warm, empathetic reflection highlighting patterns between sleep, stress, and mood, acknowledging journal thoughts, offering gentle mindfulness/lifestyle thoughts. Conclude with a reminder that these are personal reflections, not a clinical diagnosis."\n'
+            '  "analysis": "2 concise paragraphs of warm, empathetic reflection highlighting patterns between sleep, stress, activity and mood, acknowledging journal thoughts, offering gentle mindfulness/lifestyle thoughts. Conclude with a reminder that these are personal reflections, not a clinical diagnosis."\n'
             "}\n"
             "Guardrail: NEVER provide psychiatric diagnoses (such as depression, anxiety disorder, insomnia). Always remain supportive and non-clinical."
         )
@@ -96,6 +106,8 @@ def analyze_wellness(
             "stressTrend": stress_trend,
             "sleepTrend": sleep_trend,
             "analysis": analysis_text,
+            "sleepLm": sleeplm_result,
+            "menta": menta_result,
             "provider": f"openrouter/{openrouter_client.model}",
         }
     except Exception as exc:
@@ -107,6 +119,8 @@ def analyze_wellness(
             "moodTrend": mood_str,
             "stressTrend": stress_str,
             "sleepTrend": sleep_str,
-            "analysis": f"Your recent self-reported entries show mood at {avg_mood:.1f}/10, stress at {avg_stress:.1f}/10 and average sleep of {avg_sleep:.1f} hours. {WELLNESS_DISCLAIMER}",
+            "analysis": f"Your recent self-reported entries show mood at {avg_mood:.1f}/10, stress at {avg_stress:.1f}/10, activity at {avg_activity:.1f}/10 and average sleep of {avg_sleep:.1f} hours. {WELLNESS_DISCLAIMER}",
+            "sleepLm": sleeplm_result,
+            "menta": menta_result,
             "provider": "wellness-rule-engine",
         }

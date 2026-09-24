@@ -15,7 +15,9 @@ from food_detection.service import analyze_image
 from food_detection.packed_service import analyze_packed_food
 from food_detection.meal_service import analyze_real_food
 from services.settings import settings
+from wellness.menta import analyze_menta
 from wellness.service import analyze_wellness
+from wellness.sleeplm import analyze_sleeplm
 
 class ChatMessageItem(BaseModel):
     sender: str = "USER"
@@ -29,6 +31,7 @@ class WellnessEntryItem(BaseModel):
     mood: int = 7
     stress: int = 4
     energy: int = 7
+    activity: int = 5
     sleepHours: float = 7.0
     journalText: str = ""
     createdAt: str = ""
@@ -37,7 +40,19 @@ class WellnessAnalyzeRequest(BaseModel):
     averageMood: float = 7.0
     averageStress: float = 4.0
     averageEnergy: float = 7.0
+    averageActivity: float = 5.0
     averageSleep: float = 7.0
+    entries: list[WellnessEntryItem] = []
+
+class SleepLmRequest(BaseModel):
+    averageSleep: float = 7.0
+    entries: list[WellnessEntryItem] = []
+
+class MentaRequest(BaseModel):
+    averageMood: float = 7.0
+    averageStress: float = 4.0
+    averageEnergy: float = 7.0
+    averageActivity: float = 5.0
     entries: list[WellnessEntryItem] = []
 
 app = FastAPI(
@@ -172,7 +187,7 @@ def chat(request: ChatRequest) -> dict[str, object]:
 
 @app.post("/wellness/analyze", tags=["wellness"])
 def wellness_analyze(request: WellnessAnalyzeRequest) -> dict[str, object]:
-    """Generate empathetic trend insights and journal reflections via OpenRouter."""
+    """Generate empathetic trend insights, SleepLM sleep architecture, and Menta mind-body synthesis."""
     entries_dicts = [e.model_dump() for e in request.entries]
     return analyze_wellness(
         entries=entries_dicts,
@@ -180,4 +195,28 @@ def wellness_analyze(request: WellnessAnalyzeRequest) -> dict[str, object]:
         avg_stress=request.averageStress,
         avg_energy=request.averageEnergy,
         avg_sleep=request.averageSleep,
+        avg_activity=request.averageActivity,
+    )
+
+
+@app.post("/wellness/sleeplm", tags=["wellness"])
+def wellness_sleeplm(request: SleepLmRequest) -> dict[str, object]:
+    """Dedicated SleepLM endpoint for clinical-grade sleep summaries and restorative recommendations."""
+    entries_dicts = [e.model_dump() for e in request.entries]
+    return analyze_sleeplm(
+        entries=entries_dicts,
+        avg_sleep=request.averageSleep,
+    )
+
+
+@app.post("/wellness/menta", tags=["wellness"])
+def wellness_menta(request: MentaRequest) -> dict[str, object]:
+    """Dedicated Menta endpoint for holistic mood, energy, activity, and stress multi-pillar synthesis."""
+    entries_dicts = [e.model_dump() for e in request.entries]
+    return analyze_menta(
+        entries=entries_dicts,
+        avg_mood=request.averageMood,
+        avg_stress=request.averageStress,
+        avg_energy=request.averageEnergy,
+        avg_activity=request.averageActivity,
     )

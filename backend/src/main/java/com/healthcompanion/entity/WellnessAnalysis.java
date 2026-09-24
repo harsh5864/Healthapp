@@ -11,6 +11,8 @@ public class WellnessAnalysis {
     @Column(nullable = false, length = 40) private String moodTrend;
     @Column(nullable = false, length = 40) private String stressTrend;
     @Column(nullable = false, length = 40) private String sleepTrend;
+    @Column(columnDefinition = "TEXT") private String sleepLmJson;
+    @Column(columnDefinition = "TEXT") private String mentaJson;
     @Column(nullable = false, updatable = false) private Instant createdAt;
     @PrePersist void onCreate() { createdAt = Instant.now(); }
     public Long getId() { return id; } public User getUser() { return user; } public void setUser(User v) { user = v; }
@@ -18,5 +20,7 @@ public class WellnessAnalysis {
     public String getMoodTrend() { return moodTrend; } public void setMoodTrend(String v) { moodTrend = v; }
     public String getStressTrend() { return stressTrend; } public void setStressTrend(String v) { stressTrend = v; }
     public String getSleepTrend() { return sleepTrend; } public void setSleepTrend(String v) { sleepTrend = v; }
+    public String getSleepLmJson() { return sleepLmJson; } public void setSleepLmJson(String v) { sleepLmJson = v; }
+    public String getMentaJson() { return mentaJson; } public void setMentaJson(String v) { mentaJson = v; }
     public Instant getCreatedAt() { return createdAt; }
 }

@@ -236,3 +236,314 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .empty-day-state span { font-size: 2rem; display: block; margin-bottom: 8px; }
 .empty-day-state p { margin: 0; font-size: 0.82rem; }
 
+/* --- Range Color for Activity --- */
+.range--purple { accent-color: #7e22ce; }
+
+/* --- SleepLM & Menta AI Cards & Components --- */
+.ai-module-card {
+  margin-top: 22px;
+  padding: 22px;
+  border-radius: 18px;
+  background: white;
+  border: 1px solid #e1ece5;
+  box-shadow: 0 8px 24px rgba(23, 77, 62, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-module-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.ai-module-card--sleeplm::before {
+  background: linear-gradient(90deg, #3b82f6, #6366f1, #8b5cf6);
+}
+
+.ai-module-card--menta::before {
+  background: linear-gradient(90deg, #10b981, #06b6d4, #8b5cf6);
+}
+
+.ai-module-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.ai-module-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.ai-module-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.ai-module-icon--sleeplm {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.ai-module-icon--menta {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.ai-module-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 850;
+  color: #173b32;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ai-module-sub {
+  margin: 2px 0 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #718f84;
+}
+
+.ai-module-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ai-module-tag--sleeplm {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.ai-module-tag--menta {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.ai-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.ai-metric-pill {
+  flex: 1;
+  min-width: 105px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #f7faf8;
+  border: 1px solid #e7f0ea;
+}
+
+.ai-metric-pill small {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #7b958c;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.ai-metric-pill strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 1.15rem;
+  font-weight: 850;
+  color: #1a4238;
+}
+
+.ai-metric-pill strong.score-highlight {
+  color: #087b6c;
+}
+
+.ai-metric-pill strong.score-highlight--purple {
+  color: #6366f1;
+}
+
+.ai-summary-text {
+  font-size: 0.82rem;
+  line-height: 1.68;
+  color: #48665c;
+  margin: 14px 0;
+  background: #fbfdfc;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #eaf2ed;
+}
+
+.ai-rec-list {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.ai-rec-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 0.77rem;
+  line-height: 1.45;
+  color: #395a50;
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: #f5f9f6;
+  border: 1px solid #e7f0e9;
+}
+
+.ai-rec-item span {
+  color: #0d826a;
+  font-weight: 800;
+  flex-shrink: 0;
+  font-size: 0.85rem;
+}
+
+.menta-action-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 13px 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+  border: 1px solid #a7f3d0;
+}
+
+.menta-action-box span {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.menta-action-box b {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #065f46;
+  margin-bottom: 2px;
+}
+
+.menta-action-box p {
+  margin: 0;
+  font-size: 0.74rem;
+  color: #047857;
+  line-height: 1.5;
+}
+
+/* --- Overview Intelligence Dual Banner --- */
+.overview-ai-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 820px) {
+  .overview-ai-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.overview-ai-banner {
+  padding: 20px;
+  border-radius: 18px;
+  background: white;
+  border: 1px solid #e1ece5;
+  box-shadow: 0 4px 18px rgba(23, 77, 62, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.overview-ai-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(23, 77, 62, 0.08);
+}
+
+.overview-ai-banner--sleeplm {
+  border-left: 4px solid #4f46e5;
+}
+
+.overview-ai-banner--menta {
+  border-left: 4px solid #10b981;
+}
+
+.overview-banner-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.overview-banner-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 850;
+  color: #173b32;
+}
+
+.overview-banner-score {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: #087b6c;
+}
+
+.overview-banner-score--purple {
+  color: #4f46e5;
+}
+
+.overview-banner-body {
+  font-size: 0.78rem;
+  color: #55746a;
+  line-height: 1.55;
+  margin: 0 0 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.overview-banner-link {
+  align-self: flex-start;
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #087b6c;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.overview-banner-link:hover {
+  text-decoration: underline;
+}
+
+
