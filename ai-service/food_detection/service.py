@@ -73,6 +73,8 @@ def _safe_result(width: int, height: int, image_format: str, observation: str, p
     }
 
 
+from services.openrouter_client import openrouter_client
+
 def analyze_image(image_bytes: bytes, filename: str | None, content_type: str) -> dict[str, Any]:
     """Run food identification and visual freshness evaluation."""
     # Explicit mock mode check
@@ -93,9 +95,56 @@ def analyze_image(image_bytes: bytes, filename: str | None, content_type: str) -
         image = Image.open(BytesIO(image_bytes)).convert("RGB")
         width, height = image.size
         image_format = image.format or content_type.split("/")[-1]
-    except (UnidentifiedImageError, OSError) as exc:
+    except Exception as exc:
         raise ValueError("The uploaded file is not a readable image.") from exc
 
+    # 1. Primary: High-accuracy multimodal vision via OpenRouter Gemini
+    if openrouter_client.is_available:
+        try:
+            vision_prompt = (
+                "You are an AI Food Freshness and Produce Inspection specialist for a health application.\n"
+                "Examine this food or produce image closely and assess visible condition, freshness, and quality.\n"
+                "Respond ONLY with a valid JSON object matching this schema:\n"
+                "{\n"
+                '  "foodName": "Specific name of produce/food (e.g. Honeycrisp Apple, Cavendish Banana, Baby Spinach, Sliced Tomato). If not food, output \'Non-Produce Item\'.",\n'
+                '  "freshnessScore": integer between 0 and 100 representing visible condition (e.g. 90-100 very fresh, 70-89 good/ripe, 40-69 fair/consume soon, 1-39 spoiling, 0 spoiled/non-food),\n'
+                '  "condition": "Must be exactly one of: \'Appears Fresh\', \'Good / Ripe\', \'Fair - Consume Soon\', \'Spoiled / Past Prime\', or \'Unable to Determine\'",\n'
+                '  "observations": "2-3 sentences describing visible traits: color uniformity, firmness clues, surface texture, blemishes, bruising, browning, or mold signs.",\n'
+                '  "recommendation": "Practical advice for optimal storage, preparation, or safety inspection."\n'
+                "}\n"
+                "Safety rule: If the image is unclear or not produce, set condition to 'Unable to Determine' and freshnessScore to 0."
+            )
+            raw_res = openrouter_client.vision_analysis(
+                prompt=vision_prompt,
+                image_bytes=image_bytes,
+                content_type=content_type,
+                max_tokens=500,
+                temperature=0.2,
+            )
+            parsed = openrouter_client.parse_json_response(raw_res)
+
+            food_name = str(parsed.get("foodName") or "Produce item").strip()
+            score = int(parsed.get("freshnessScore", 0))
+            score = max(0, min(100, score))
+            cond = str(parsed.get("condition") or "Unable to Determine").strip()
+            obs = str(parsed.get("observations") or "").strip()
+            rec = str(parsed.get("recommendation") or "Inspect thoroughly before eating.").strip()
+
+            if SAFETY_DISCLAIMER not in obs:
+                obs = f"{obs} {SAFETY_DISCLAIMER}".strip()
+
+            return {
+                "foodName": food_name,
+                "freshnessScore": score,
+                "condition": cond,
+                "observations": obs,
+                "recommendation": rec,
+                "provider": f"openrouter/{openrouter_client.model}",
+            }
+        except Exception as exc:
+            logger.warning("OpenRouter vision analysis encountered an error: %s; falling back to local models", exc)
+
+    # 2. Secondary fallback: Local classification & FreshnessDetector models
     food_clf = _get_food_classifier()
     freshness_detector = FreshnessDetector.get_instance()
 

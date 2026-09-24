@@ -1,3 +1,44 @@
 package com.healthcompanion.controller;
-import com.healthcompanion.dto.FoodDtos.FoodResponse; import com.healthcompanion.service.FoodService; import java.util.*; import org.springframework.http.*; import org.springframework.security.core.Authentication; import org.springframework.web.bind.annotation.*; import org.springframework.web.multipart.MultipartFile;
-@RestController @RequestMapping("/api/food") public class FoodController { private final FoodService service; public FoodController(FoodService s){service=s;} @PostMapping(value="/analyze",consumes=MediaType.MULTIPART_FORM_DATA_VALUE) public FoodResponse analyze(Authentication a,@RequestPart("image") MultipartFile image){return service.analyze(a.getName(),image);} @GetMapping("/history") public List<FoodResponse> history(Authentication a){return service.history(a.getName());} @GetMapping("/{id}") public FoodResponse get(Authentication a,@PathVariable Long id){return service.get(a.getName(),id);} @DeleteMapping("/{id}") @ResponseStatus(HttpStatus.NO_CONTENT) public void delete(Authentication a,@PathVariable Long id){service.delete(a.getName(),id);} }
+
+import com.healthcompanion.dto.FoodDtos.FoodResponse;
+import com.healthcompanion.service.FoodService;
+import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+@RestController
+@RequestMapping("/api/food")
+public class FoodController {
+    private final FoodService service;
+
+    public FoodController(FoodService s) {
+        this.service = s;
+    }
+
+    @PostMapping(value = "/analyze", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public FoodResponse analyze(
+            Authentication a,
+            @RequestPart("image") MultipartFile image,
+            @RequestParam(value = "scanType", required = false, defaultValue = "PRODUCE") String scanType) {
+        return service.analyze(a.getName(), image, scanType);
+    }
+
+    @GetMapping("/history")
+    public List<FoodResponse> history(Authentication a) {
+        return service.history(a.getName());
+    }
+
+    @GetMapping("/{id}")
+    public FoodResponse get(Authentication a, @PathVariable Long id) {
+        return service.get(a.getName(), id);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(Authentication a, @PathVariable Long id) {
+        service.delete(a.getName(), id);
+    }
+}

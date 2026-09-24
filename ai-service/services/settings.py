@@ -22,6 +22,7 @@ class Settings:
     freshness_model_enabled: bool = getenv("FRESHNESS_MODEL_ENABLED", "true").lower() == "true"
     openrouter_api_key: str = getenv("OPENROUTER_API_KEY", "")
     openrouter_model: str = getenv("OPENROUTER_MODEL", "google/gemini-2.5-flash")
+    packed_food_model: str = getenv("PACKED_FOOD_MODEL", "google/gemma-4-26b-a4b-it")
 
 
 settings = Settings()

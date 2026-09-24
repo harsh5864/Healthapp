@@ -12,7 +12,10 @@ from pydantic import BaseModel
 
 from chatbot.service import get_health_assistant
 from food_detection.service import analyze_image
+from food_detection.packed_service import analyze_packed_food
+from food_detection.meal_service import analyze_real_food
 from services.settings import settings
+from wellness.service import analyze_wellness
 
 class ChatMessageItem(BaseModel):
     sender: str = "USER"
@@ -21,6 +24,21 @@ class ChatMessageItem(BaseModel):
 class ChatRequest(BaseModel):
     message: str
     history: list[ChatMessageItem] = []
+
+class WellnessEntryItem(BaseModel):
+    mood: int = 7
+    stress: int = 4
+    energy: int = 7
+    sleepHours: float = 7.0
+    journalText: str = ""
+    createdAt: str = ""
+
+class WellnessAnalyzeRequest(BaseModel):
+    averageMood: float = 7.0
+    averageStress: float = 4.0
+    averageEnergy: float = 7.0
+    averageSleep: float = 7.0
+    entries: list[WellnessEntryItem] = []
 
 app = FastAPI(
     title="AI Health Companion AI Service",
@@ -99,8 +117,41 @@ async def analyze_food_base64(request: Request) -> dict[str, object]:
             "recommendation": "Inspect the food yourself; this service cannot guarantee food safety.",
             "provider": "ai-service-unconfigured",
         }
+    scan_type = str(data.get("scanType", "PRODUCE")).upper()
     try:
+        if "REAL" in scan_type or "MEAL" in scan_type:
+            return analyze_real_food(payload, data.get("filename"), data.get("contentType", "image/png"))
+        if "PACKED" in scan_type:
+            return analyze_packed_food(payload, data.get("filename"), data.get("contentType", "image/png"))
         return analyze_image(payload, data.get("filename"), data.get("contentType", "image/png"))
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@app.post("/analyze/meal", tags=["food"])
+async def analyze_meal(image: UploadFile = File(...)) -> dict[str, object]:
+    """Analyze a real food meal or dish using Gemma 4 26B A4B."""
+    if image.content_type not in {"image/jpeg", "image/png", "image/webp"}:
+        raise HTTPException(status_code=415, detail="Upload a JPG, PNG or WebP image.")
+    payload = await image.read()
+    if not payload:
+        raise HTTPException(status_code=400, detail="The uploaded image is empty.")
+    try:
+        return analyze_real_food(payload, image.filename, image.content_type)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@app.post("/analyze/packed", tags=["food"])
+async def analyze_packed(image: UploadFile = File(...)) -> dict[str, object]:
+    """Analyze a food packet or ingredient list using Gemma 4 26B A4B."""
+    if image.content_type not in {"image/jpeg", "image/png", "image/webp"}:
+        raise HTTPException(status_code=415, detail="Upload a JPG, PNG or WebP image.")
+    payload = await image.read()
+    if not payload:
+        raise HTTPException(status_code=400, detail="The uploaded image is empty.")
+    try:
+        return analyze_packed_food(payload, image.filename, image.content_type)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
@@ -117,3 +168,16 @@ def chat(request: ChatRequest) -> dict[str, object]:
     assistant = get_health_assistant()
     history_dicts = [{"sender": h.sender, "message": h.message} for h in request.history]
     return assistant.respond(msg, history_dicts)
+
+
+@app.post("/wellness/analyze", tags=["wellness"])
+def wellness_analyze(request: WellnessAnalyzeRequest) -> dict[str, object]:
+    """Generate empathetic trend insights and journal reflections via OpenRouter."""
+    entries_dicts = [e.model_dump() for e in request.entries]
+    return analyze_wellness(
+        entries=entries_dicts,
+        avg_mood=request.averageMood,
+        avg_stress=request.averageStress,
+        avg_energy=request.averageEnergy,
+        avg_sleep=request.averageSleep,
+    )

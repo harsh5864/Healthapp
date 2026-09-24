@@ -82,5 +82,157 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .conversation-item.selected button.conversation-title-btn { color: #087b6c; font-weight: 700; }
 .conversation-delete-btn { background: transparent; border: 0; color: #9bb3ab; font-size: 1rem; padding: 6px 8px; line-height: 1; cursor: pointer; border-radius: 6px; flex-shrink: 0; }
 .conversation-delete-btn:hover { color: #c44336; background: #fee8e6; }
-@media (max-width: 700px) { .auth-page { grid-template-columns: 1fr; }.auth-art { display: none; }.app-sidebar { inset: auto 0 0; z-index: 5; width: 100%; height: 67px; padding: 0 7px; border: 0; border-top: 1px solid #e1ede7; }.app-sidebar .brand,.sidebar-bottom a,.sidebar-bottom button span,.app-sidebar nav a:not(.active)::after { display: none; }.app-sidebar nav { display: flex; justify-content: space-around; gap: 0; margin: 0; }.app-sidebar nav a { display: grid; min-width: 55px; justify-items: center; gap: 2px; padding: 8px 6px; font-size: .6rem; }.app-sidebar nav a span { font-size: 1.1rem; }.app-sidebar nav a.active { background: transparent; }.sidebar-bottom { position: absolute; right: 6px; top: -59px; }.sidebar-bottom a { display: grid; width: 37px; height: 37px; padding: 0; place-items: center; border-radius: 50%; background: #edf8f2; }.sidebar-bottom button { display: none; }.app-main { width: 100%; margin: 0; padding-bottom: 67px; }.app-topbar { min-height: 66px; padding: 0 20px; }.topbar-name { display: none; }.page-content { padding: 33px 18px 45px; }.page-heading { display: block; }.page-heading .button { margin-top: 20px; }.metric-grid { grid-template-columns: repeat(2,1fr); }.dashboard-columns,.dashboard-feature-grid,.history-grid { grid-template-columns: 1fr; }.chat-layout { grid-template-columns: 1fr; }.conversation-list { display: flex; align-items: center; gap: 5px; overflow-x: auto; padding: 10px; border-right: 0; border-bottom: 1px solid #e6eee9; }.conversation-list h3 { display: none; }.conversation-list button { width: auto; min-width: 120px; }.chat-messages { padding: 18px; }.message { max-width: 90%; }.site-header nav a:not(.header-signup) { display: none; }.site-header nav { margin-left: auto; }.header-signup { font-size: .72rem !important; }.auth-panel { padding: 28px; }.back-link { margin-bottom: 34px; } }
+
+/* --- Packed Food & Nutri-Grade Scanner Styling --- */
+.scanner-tabs { display: flex; gap: 8px; margin-bottom: 24px; padding: 5px; border-radius: 14px; background: #eaf3ee; max-width: 500px; }
+.scanner-tab { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border: 0; border-radius: 10px; background: transparent; color: #53756a; font: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; }
+.scanner-tab:hover { color: #164e43; }
+.scanner-tab.active { background: white; color: #087b6c; box-shadow: 0 4px 12px rgba(23, 77, 62, 0.08); }
+
+.grade-display-box { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 18px; border-radius: 16px; background: #fbfdfc; border: 1px solid #e1ece5; margin-bottom: 18px; }
+.grade-badge-huge { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 68px; height: 68px; border-radius: 18px; color: white; font-weight: 900; line-height: 1; box-shadow: 0 8px 20px rgba(0,0,0,0.12); flex-shrink: 0; }
+.grade-badge-huge span { font-size: 2.2rem; }
+.grade-badge-huge small { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; opacity: 0.9; margin-top: 1px; }
+
+.grade-badge-huge--a { background: linear-gradient(135deg, #10b981, #059669); }
+.grade-badge-huge--b { background: linear-gradient(135deg, #22c55e, #16a34a); }
+.grade-badge-huge--c { background: linear-gradient(135deg, #eab308, #ca8a04); }
+.grade-badge-huge--d { background: linear-gradient(135deg, #f97316, #ea580c); }
+.grade-badge-huge--f { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+.grade-details { flex: 1; min-width: 0; }
+.grade-title { font-size: 1.15rem; font-weight: 800; color: #1e453c; margin: 0 0 5px; }
+.processing-tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 99px; font-size: 0.72rem; font-weight: 700; }
+.processing-tag--nova1 { background: #e6f9f0; color: #067647; }
+.processing-tag--nova2 { background: #eff8ff; color: #175cd3; }
+.processing-tag--nova3 { background: #fef6ee; color: #b54708; }
+.processing-tag--nova4 { background: #fef3f2; color: #b42318; }
+
+.nutri-scale { display: flex; gap: 4px; margin: 15px 0 20px; }
+.nutri-scale-step { flex: 1; text-align: center; padding: 6px 2px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; opacity: 0.35; transition: all 0.2s ease; }
+.nutri-scale-step.step-a { background: #10b981; color: white; }
+.nutri-scale-step.step-b { background: #22c55e; color: white; }
+.nutri-scale-step.step-c { background: #eab308; color: white; }
+.nutri-scale-step.step-d { background: #f97316; color: white; }
+.nutri-scale-step.step-f { background: #ef4444; color: white; }
+.nutri-scale-step.active { opacity: 1; transform: scale(1.08); box-shadow: 0 4px 10px rgba(0,0,0,0.18); }
+
+.bullet-grid { display: grid; gap: 12px; margin-top: 16px; }
+.bullet-card { padding: 14px 16px; border-radius: 12px; border: 1px solid #edf4ef; font-size: 0.78rem; line-height: 1.55; }
+.bullet-card--pos { background: #f3faf5; border-color: #d2edd9; }
+.bullet-card--neg { background: #fff8f5; border-color: #fddcd2; }
+.bullet-card b { display: flex; align-items: center; gap: 6px; margin-bottom: 7px; font-size: 0.8rem; }
+.bullet-card--pos b { color: #157954; }
+.bullet-card--neg b { color: #b84a29; }
+.bullet-card ul { margin: 0; padding-left: 18px; color: #436257; }
+.bullet-card li { margin-bottom: 4px; }
+.bullet-card li:last-child { margin-bottom: 0; }
+
+.ai-attribution-pill { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; padding: 5px 10px; border-radius: 99px; background: #f0f7f3; color: #087b6c; font-size: 0.68rem; font-weight: 750; }
+
+/* --- Real Food & Nutrient Intake Styling --- */
+.scanner-tabs--three { max-width: 680px; }
+
+.macro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); gap: 10px; margin: 16px 0 20px; }
+.macro-card { padding: 12px 14px; border-radius: 14px; text-align: center; border: 1px solid #e1ece5; background: #fbfdfc; transition: transform 0.15s ease; }
+.macro-card:hover { transform: translateY(-2px); }
+.macro-card .macro-icon { font-size: 1.25rem; margin-bottom: 2px; display: block; }
+.macro-card .macro-val { font-size: 1.25rem; font-weight: 850; color: #164e43; line-height: 1.1; }
+.macro-card .macro-unit { font-size: 0.68rem; font-weight: 700; color: #769188; text-transform: uppercase; margin-left: 2px; }
+.macro-card .macro-label { font-size: 0.7rem; font-weight: 750; color: #53756a; margin-top: 4px; text-transform: capitalize; }
+
+.macro-card--cal { background: linear-gradient(135deg, #fff7ed, #ffedd5); border-color: #fed7aa; }
+.macro-card--cal .macro-val { color: #c2410c; }
+.macro-card--pro { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-color: #bbf7d0; }
+.macro-card--pro .macro-val { color: #15803d; }
+.macro-card--carb { background: linear-gradient(135deg, #eff6ff, #dbeafe); border-color: #bfdbfe; }
+.macro-card--carb .macro-val { color: #1d4ed8; }
+.macro-card--fat { background: linear-gradient(135deg, #fefce8, #fef9c3); border-color: #fef08a; }
+.macro-card--fat .macro-val { color: #a16207; }
+.macro-card--fib { background: linear-gradient(135deg, #faf5ff, #f3e8ff); border-color: #e9d5ff; }
+.macro-card--fib .macro-val { color: #7e22ce; }
+
+/* Intake Logging Prompt Card */
+.intake-prompt-card { margin-top: 22px; padding: 20px; border-radius: 18px; background: linear-gradient(145deg, #f3faf6, #e7f5ed); border: 2px solid #bce4cd; box-shadow: 0 8px 24px rgba(8, 123, 108, 0.08); }
+.intake-prompt-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+.intake-prompt-icon { width: 44px; height: 44px; border-radius: 12px; background: #087b6c; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; box-shadow: 0 4px 10px rgba(8, 123, 108, 0.25); }
+.intake-prompt-title { margin: 0 0 4px; font-size: 1.05rem; font-weight: 800; color: #123d34; }
+.intake-prompt-sub { margin: 0; font-size: 0.78rem; color: #4e7368; line-height: 1.45; }
+
+.meal-type-selector { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 16px; }
+.meal-type-btn { padding: 6px 14px; border-radius: 99px; border: 1px solid #c2ded0; background: white; color: #375b51; font: inherit; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: all 0.15s ease; }
+.meal-type-btn:hover { border-color: #087b6c; color: #087b6c; }
+.meal-type-btn.active { background: #087b6c; color: white; border-color: #087b6c; box-shadow: 0 3px 8px rgba(8, 123, 108, 0.2); }
+
+.intake-action-row { display: flex; align-items: center; gap: 12px; }
+.intake-log-btn { flex: 1; padding: 12px 20px; border-radius: 12px; border: 0; background: #087b6c; color: white; font: inherit; font-size: 0.85rem; font-weight: 800; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(8, 123, 108, 0.3); }
+.intake-log-btn:hover:not(:disabled) { background: #066357; transform: translateY(-1px); box-shadow: 0 6px 18px rgba(8, 123, 108, 0.38); }
+.intake-log-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.intake-success-badge { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px; background: #def7ec; color: #03543f; font-size: 0.78rem; font-weight: 750; border: 1px solid #bcf0da; }
+
+/* 3-Day Nutrient Intake Dashboard */
+.nutrient-tracker-section { margin-top: 48px; border-top: 1px solid #e1ece5; padding-top: 36px; }
+.nutrient-tracker-header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+.nutrient-tracker-title h2 { margin: 0 0 6px; font-size: 1.4rem; font-weight: 850; color: #164e43; }
+.nutrient-tracker-title p { margin: 0; font-size: 0.82rem; color: #628277; }
+
+.history-day-tabs { display: flex; gap: 8px; padding: 4px; border-radius: 12px; background: #eaf3ee; }
+.history-day-tab { padding: 8px 16px; border: 0; border-radius: 9px; background: transparent; color: #53756a; font: inherit; font-size: 0.78rem; font-weight: 750; cursor: pointer; transition: all 0.15s ease; }
+.history-day-tab:hover { color: #164e43; }
+.history-day-tab.active { background: white; color: #087b6c; font-weight: 800; box-shadow: 0 3px 10px rgba(23, 77, 62, 0.08); }
+
+.tracker-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; }
+@media (max-width: 900px) { .tracker-grid { grid-template-columns: 1fr; } }
+
+.day-totals-card { background: white; border-radius: 18px; border: 1px solid #e1ece5; padding: 22px; box-shadow: 0 4px 16px rgba(23, 77, 62, 0.03); }
+.day-totals-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.day-totals-title { font-size: 1rem; font-weight: 800; color: #1e453c; }
+.day-totals-date { font-size: 0.74rem; font-weight: 700; color: #769188; background: #f0f7f3; padding: 3px 10px; border-radius: 99px; }
+
+/* Calorie Bar */
+.calorie-progress-box { margin-bottom: 20px; }
+.calorie-meta { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
+.calorie-current { font-size: 1.45rem; font-weight: 900; color: #164e43; }
+.calorie-target { font-size: 0.78rem; font-weight: 700; color: #769188; }
+.calorie-bar-bg { width: 100%; height: 12px; border-radius: 99px; background: #eaf3ee; overflow: hidden; }
+.calorie-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #10b981, #087b6c); transition: width 0.4s ease; }
+
+/* Macro Mini Rows */
+.macro-progress-list { display: flex; flex-direction: column; gap: 12px; }
+.macro-progress-item { display: flex; flex-direction: column; gap: 4px; }
+.macro-progress-info { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 750; color: #436257; }
+.macro-bar-bg { width: 100%; height: 7px; border-radius: 99px; background: #edf4ef; overflow: hidden; }
+.macro-bar-fill { height: 100%; border-radius: 99px; transition: width 0.3s ease; }
+.macro-bar-fill--pro { background: #16a34a; }
+.macro-bar-fill--carb { background: #2563eb; }
+.macro-bar-fill--fat { background: #d97706; }
+.macro-bar-fill--fib { background: #9333ea; }
+
+/* Meal Items History Card */
+.day-meals-card { background: white; border-radius: 18px; border: 1px solid #e1ece5; padding: 22px; box-shadow: 0 4px 16px rgba(23, 77, 62, 0.03); display: flex; flex-direction: column; }
+.day-meals-title { font-size: 1rem; font-weight: 800; color: #1e453c; margin: 0 0 14px; display: flex; align-items: center; justify-content: space-between; }
+.day-meals-list { display: flex; flex-direction: column; gap: 10px; max-height: 380px; overflow-y: auto; padding-right: 4px; }
+
+.meal-item-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border-radius: 12px; background: #fbfdfc; border: 1px solid #e8f0eb; transition: background 0.15s ease; }
+.meal-item-row:hover { background: #f4faf6; border-color: #d1e7db; }
+.meal-item-main { flex: 1; min-width: 0; }
+.meal-item-tags { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
+.meal-badge { font-size: 0.64rem; font-weight: 800; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; }
+.meal-badge--BREAKFAST { background: #fef3c7; color: #92400e; }
+.meal-badge--LUNCH { background: #dcfce7; color: #166534; }
+.meal-badge--DINNER { background: #ede9fe; color: #5b21b6; }
+.meal-badge--SNACK { background: #ffedd5; color: #9a3412; }
+.meal-item-time { font-size: 0.68rem; color: #8ea89e; }
+.meal-item-name { font-size: 0.85rem; font-weight: 750; color: #1e453c; margin: 0 0 3px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+.meal-item-portion { font-size: 0.7rem; color: #628277; }
+.meal-item-stats { text-align: right; flex-shrink: 0; }
+.meal-item-cals { font-size: 0.95rem; font-weight: 850; color: #164e43; }
+.meal-item-macros { font-size: 0.68rem; color: #769188; font-weight: 600; margin-top: 1px; }
+
+.meal-item-delete { background: transparent; border: 0; color: #a0b8af; font-size: 1.1rem; line-height: 1; padding: 6px 8px; border-radius: 6px; cursor: pointer; transition: all 0.15s ease; }
+.meal-item-delete:hover { color: #dc2626; background: #fee2e2; }
+
+.empty-day-state { padding: 36px 16px; text-align: center; color: #769188; }
+.empty-day-state span { font-size: 2rem; display: block; margin-bottom: 8px; }
+.empty-day-state p { margin: 0; font-size: 0.82rem; }
 

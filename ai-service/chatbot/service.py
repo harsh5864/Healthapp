@@ -18,6 +18,7 @@ import re
 from typing import Any
 from dotenv import load_dotenv
 import requests
+from services.openrouter_client import openrouter_client
 
 # Load root environment variables if available
 root_env = Path(__file__).resolve().parents[2] / ".env"
@@ -69,16 +70,9 @@ class HealthChatAssistant:
                 return True, description
         return False, ""
 
+
     def _call_openrouter_api(self, message: str, history: list[dict[str, str]]) -> str:
         """Call OpenRouter Chat Completions API with medical safety system instructions."""
-        url = "https://openrouter.ai/api/v1/chat/completions"
-        headers = {
-            "Authorization": f"Bearer {self.openrouter_api_key}",
-            "HTTP-Referer": "http://localhost:5173",
-            "X-Title": "AI Health Companion",
-            "Content-Type": "application/json",
-        }
-
         system_instruction = (
             "You are an AI Health Information Assistant for general educational support. "
             "You must strictly follow these clinical safety guardrails:\n"
@@ -101,25 +95,10 @@ class HealthChatAssistant:
 
         messages.append({"role": "user", "content": message})
 
-        payload = {
-            "model": self.openrouter_model,
-            "messages": messages,
-            "temperature": 0.3,
-            "max_tokens": 800,
-        }
-
-        resp = requests.post(url, headers=headers, json=payload, timeout=20)
-        if resp.status_code == 200:
-            data = resp.json()
-            choices = data.get("choices", [])
-            if choices:
-                reply_text = choices[0].get("message", {}).get("content", "").strip()
-                if reply_text:
-                    if "medical disclaimer" not in reply_text.lower() and "medical advice" not in reply_text.lower():
-                        reply_text = f"{reply_text}\n\n_{MEDICAL_DISCLAIMER}_"
-                    return reply_text
-        logger.warning("OpenRouter API returned %s: %s", resp.status_code, resp.text[:300])
-        raise RuntimeError(f"OpenRouter API returned status {resp.status_code}")
+        reply_text = openrouter_client.chat_completion(messages, max_tokens=700, temperature=0.3)
+        if "medical disclaimer" not in reply_text.lower() and "medical advice" not in reply_text.lower():
+            reply_text = f"{reply_text}\n\n_{MEDICAL_DISCLAIMER}_"
+        return reply_text
 
     def _call_gemini_api(self, message: str, history: list[dict[str, str]]) -> str:
         """Call Gemini REST API for conversational generation."""

@@ -18,6 +18,7 @@ ai-service/**/*.py[cod]
 uploads/
 mysql-data/
 .tools/
+scratch/
 
 # IDE and operating system files
 .idea/
